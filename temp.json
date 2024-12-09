@@ -1,0 +1,19 @@
+{"function": "(x1 + cos(x2**2))**4", "skeleton": "(x1 + cos(x2**2))**4"}
+{"function": "E*exp(1.40195964360676*cos(x4))", "skeleton": "C*exp(C*cos(x4))"}
+{"function": "9*x0**2 + 6*x1", "skeleton": "C*x0**2 + C*x1"}
+{"function": "2*x0**3 + 18*x0*x1 + 0.734741298679271*x1**2", "skeleton": "C*x0**3 + C*x0*x1 + C*x1**2"}
+{"function": "1.43286152708372*x0**5 + 1.22244152923331*x0*x1 + 0.158652386046673*x1**4", "skeleton": "C*x0**5 + C*x0*x1 + C*x1**4"}
+{"function": "3*x0**2 + 10*sin(x0) + 7*cos(x1)", "skeleton": "3*x0**2 + 10*sin(x0) + 7*cos(x1)"}
+{"function": "4*x0**6 + 7*x0**2 + 6*x1**4 + 16*x1", "skeleton": "4*x0**6 + 7*x0**2 + 6*x1**4 + 16*x1"}
+{"function": "4.99835254846159*x0**8 + 9*x0*x1 + 5*x1**5", "skeleton": "C*x0**8 + C*x0*x1 + C*x1**5"}
+{"function": "8*x0**4 + 10*x0*x1 + 3.2562036381506*x1**2", "skeleton": "C*x0**4 + C*x0*x1 + C*x1**2"}
+{"function": "x2 + exp(cos(exp(x2)))", "skeleton": "x2 + exp(cos(exp(x2)))"}
+{"function": "cos(exp(exp(x0)))", "skeleton": "cos(exp(exp(x0)))"}
+{"function": "E*x4*(cos(x2) + 7)", "skeleton": "C*x4*(cos(x2) + 7)"}
+{"function": "sin((x0**4 + x0)**3)", "skeleton": "sin((x0**4 + x0)**3)"}
+{"function": "cos(x3**2*x4**3)", "skeleton": "cos(x3**2*x4**3)"}
+{"function": "5*sin(x0) + 2.99062784794603*cos(x1)", "skeleton": "C*sin(x0) + C*cos(x1)"}
+{"function": "3.27540545536577*x0**2 + 16*x1", "skeleton": "C*x0**2 + C*x1"}
+{"function": "3.17290719435978*x0**3 + 2.00355883318852*x0*x1 + 3.05498378881349*x1**2", "skeleton": "C*x0**3 + C*x0*x1 + C*x1**2"}
+{"function": "1.27365358126927*x0**3 + 35*x0**2 + 2*x0*x1 + 7*x1**3", "skeleton": "C*x0**3 + C*x0**2 + C*x0*x1 + C*x1**3"}
+{"function": "cos(x3*x4)**2", "skeleton": "cos(x3*x4)**2"}
