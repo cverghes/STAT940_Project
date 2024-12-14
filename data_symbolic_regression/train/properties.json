@@ -1,0 +1,52 @@
+{
+    "n_var": 3,
+    "depth": 4,
+    "n_functions": 747,
+    "sample_per_formula": 1,
+    "n_point_range": [
+        100,
+        101
+    ],
+    "const_range": [
+        0.001,
+        2.0
+    ],
+    "var_bound_dict": {
+        "var_0": [
+            -5.0,
+            5.0
+        ],
+        "var_1": [
+            -5.0,
+            5.0
+        ],
+        "var_2": [
+            -5.0,
+            5.0
+        ]
+    },
+    "var_noise_sigma_list": [
+        0.02,
+        0.02,
+        0.02
+    ],
+    "target_noise_sigma": 0.05,
+    "operators": [
+        "sin",
+        "cos",
+        "tan",
+        "exp",
+        "log",
+        "sqrt",
+        "pow_2",
+        "gaussian",
+        "cosh",
+        "sinh",
+        "tanh",
+        "neg",
+        "reverse",
+        "add",
+        "mult"
+    ],
+    "directory": "/mnt/storage/home/aravanba/projects/GuidedSymbolicGPT/data/local/small_dataset/train"
+}
