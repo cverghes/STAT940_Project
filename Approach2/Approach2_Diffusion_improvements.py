@@ -14,7 +14,7 @@ from sympy import sympify, preorder_traversal, SympifyError
 # Define the FormulaTokenizer with hierarchical and regex-based tokenization
 class FormulaTokenizer:
     def __init__(self):
-        self.token_to_id = defaultdict(lambda: self.token_to_id["[UNK]"])  # Default to [UNK] for unknown tokens
+        self.token_to_id = defaultdict(lambda: self.token_to_id["[UNK]"]) 
         self.token_to_id["[PAD]"] = 0
         self.token_to_id["[UNK]"] = 1
         self.token_to_id["[OPEN_PAREN]"] = 2
@@ -22,11 +22,7 @@ class FormulaTokenizer:
         self.id_to_token = {v: k for k, v in self.token_to_id.items()}
 
     def build_vocab(self, tokenized_formulas):
-        """
-        Builds vocabulary from the tokenized formulas.
-        Args:
-            tokenized_formulas (list of lists): Each inner list contains tokens of a formula.
-        """
+
         for formula in tokenized_formulas:
             for token in formula:
                 if token not in self.token_to_id:
@@ -35,14 +31,7 @@ class FormulaTokenizer:
                     self.id_to_token[new_id] = token
 
     def encode(self, tokens, max_length):
-        """
-        Encodes a list of tokens into token IDs, with padding/truncation to max_length.
-        Args:
-            tokens (list): List of tokens.
-            max_length (int): Maximum length of the sequence.
-        Returns:
-            list: List of token IDs padded/truncated to max_length.
-        """
+
         token_ids = [self.token_to_id[token] for token in tokens]
         if len(token_ids) < max_length:
             token_ids += [self.token_to_id["[PAD]"]] * (max_length - len(token_ids))
@@ -51,24 +40,12 @@ class FormulaTokenizer:
         return token_ids
 
     def decode(self, token_ids):
-        """
-        Decodes a list of token IDs back into tokens.
-        Args:
-            token_ids (list): List of token IDs.
-        Returns:
-            list: List of tokens.
-        """
+
         tokens = [self.id_to_token.get(token_id, "[UNK]") for token_id in token_ids]
         return [token for token in tokens if token != "[PAD]"]
     
     def hierarchical_tokenize(self, formula):
-        """
-        Tokenizes a mathematical formula hierarchically using sympy.
-        Args:
-            formula (str): Formula in human-readable format.
-        Returns:
-            list: Hierarchical tokens of the formula.
-        """
+
         try:
             expr = sympify(formula)  # Parse the formula into a sympy expression
             tokens = [str(term) for term in preorder_traversal(expr)]
@@ -78,13 +55,7 @@ class FormulaTokenizer:
             return ["[UNK]"]
         
     def regex_tokenize(self, formula):
-            """
-            Tokenizes a formula using regex and replaces `(` and `)` with tags `[OPEN_PAREN]` and `[CLOSE_PAREN]`.
-            Args:
-                formula (str): A mathematical formula as a string.
-            Returns:
-                list: List of tokens with parenthesis replaced by tags.
-            """
+
             formula = formula.replace("(", " [OPEN_PAREN] ").replace(")", " [CLOSE_PAREN] ")
             pattern = r"""
                 (var_\d+)          |  # Match variables like var_0, var_1
@@ -129,7 +100,6 @@ def hybrid_tokenize_formula(formula, tokenizer):
         final_tokens.extend(refined_tokens)
     return final_tokens
 
-# Precompute embeddings for training and validation
 
 def precompute_embeddings_with_targets(data, normalized_data, tokenizer, embedding_model, max_length):
     precomputed = []
@@ -175,13 +145,7 @@ class DiffusionModel(nn.Module):
         )
 
     def forward(self, x):
-        """
-        Args:
-            x (torch.Tensor): Input embeddings of shape [batch_size, seq_len, embedding_dim]
-        
-        Returns:
-            torch.Tensor: Processed embeddings of shape [batch_size, seq_len, embedding_dim]
-        """
+
         # Project input embeddings to hidden dimensions
         x_hidden = self.embedding_processor(x)  # Shape: [batch_size, seq_len, hidden_dim]
 
@@ -217,9 +181,7 @@ class NoiseScheduler:
         return x_t, noise
     
     def remove_noise(self, x_t, t, model):
-        """
-        Remove noise from x_t using the diffusion model.
-        """
+
         t = t.long()  # Ensure t is of type long for indexing
 
         # Predict noise using the model
@@ -308,7 +270,7 @@ if __name__ == "__main__":
     optimizer = torch.optim.Adam(diffusion_model.parameters(), lr=1e-3)
     criterion = nn.MSELoss()
 
-    for epoch in range(10):
+    for epoch in range(100):
         diffusion_model.train()
         total_loss = 0
         for points, embedding, target in precomputed_train:
@@ -330,6 +292,12 @@ if __name__ == "__main__":
             optimizer.step()
 
         print(f"Epoch {epoch + 1}, Loss: {total_loss / len(precomputed_train):.4f}")
+    
+    # Save the model after all epochs are completed
+    model_path = "diffusion_model_final.pth"
+    torch.save(diffusion_model.state_dict(), model_path)
+    print(f"Model saved at: {model_path}")
+
 
     diffusion_model.eval()
     val_loss = 0
@@ -339,8 +307,8 @@ if __name__ == "__main__":
             x_t, noise = scheduler.add_noise(embedding.unsqueeze(0), t)
 
             # Forward pass through the diffusion model
-            pred_noise = diffusion_model(x_t)  # Pass noisy input through the model
-            loss = criterion(pred_noise, noise)  # Compute loss against true noise
+            pred_noise = diffusion_model(x_t)  
+            loss = criterion(pred_noise, noise)  
             val_loss += loss.item()
 
     print(f"Validation Loss: {val_loss / len(precomputed_val):.4f}")
@@ -353,8 +321,8 @@ if __name__ == "__main__":
 
     # Start denoising
     print("Starting denoising for the first training data point...")
-    t = torch.tensor([scheduler.timesteps - 1])  # Initialize at the final timestep
-    x_t = embedding.unsqueeze(0)  # Prepare noisy input [batch_size=1, seq_len, embedding_dim]
+    t = torch.tensor([scheduler.timesteps - 1])  
+    x_t = embedding.unsqueeze(0)  
 
     while t > 0:
         # Expand t to match batch dimensions (if required)
@@ -367,9 +335,9 @@ if __name__ == "__main__":
         t -= 1
 
     # Final denoised embedding
-    denoised_embedding = x_t.squeeze(0)  # Remove batch dimension
+    denoised_embedding = x_t.squeeze(0) 
 
-    # Debug: Inspect denoised_embedding values
+    
     print("Denoised embedding:", denoised_embedding)
 
     # Inspect token indices after argmax
